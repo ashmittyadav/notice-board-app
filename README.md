@@ -31,6 +31,13 @@ A full-stack Notice Board system where:
 
 ---
 
+## 🌟 Key Highlights
+- JWT Authentication
+- Role-based Authorization (Admin/Student)
+- REST API Design
+- Full-stack implementation
+  
+
 ## ▶️ How to Run
 ```bash
 
