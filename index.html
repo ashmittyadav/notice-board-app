@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Notice Board</title>
+  <style>
+    body {
+      font-family: Arial;
+      max-width: 600px;
+      margin: auto;
+    }
+    input, textarea {
+      width: 100%;
+      margin: 5px 0;
+      padding: 8px;
+    }
+    button {
+      padding: 8px;
+      margin-top: 5px;
+    }
+    .notice {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>Login</h2>
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+
+<hr>
+
+<div id="addSection">
+  <h2>Add Notice</h2>
+  <input id="title" placeholder="Title">
+  <textarea id="content"></textarea>
+  <button onclick="addNotice()">Add Notice</button>
+</div>
+
+<hr>
+
+<h2>All Notices</h2>
+<div id="notices"></div>
+
+<script>
+const API = "http://localhost:5000";
+let token = "";
+
+// Login
+let role = "";
+
+async function login() {
+  const res = await fetch(API + "/api/auth/login", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      email: document.getElementById("email").value,
+      password: document.getElementById("password").value
+    })
+  });
+
+  const data = await res.json();
+  token = data.token;
+
+  // Decode role (simple way)
+  const payload = JSON.parse(atob(token.split(".")[1]));
+  role = payload.role;
+
+  if (role !== "admin") {
+    document.getElementById("addSection").style.display = "none";
+  }
+
+  alert("Logged in!");
+}
+
+// Add Notice
+async function addNotice() {
+  const res = await fetch(API + "/api/notices", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + token
+    },
+    body: JSON.stringify({
+      title: document.getElementById("title").value,
+      content: document.getElementById("content").value
+    })
+  });
+
+  if (res.status !== 200) {
+    alert("Not allowed / Login first");
+    return;
+  }
+
+  getNotices();
+}
+
+// Get Notices
+async function getNotices() {
+  const res = await fetch(API + "/api/notices");
+  const data = await res.json();
+
+  const container = document.getElementById("notices");
+  container.innerHTML = "";
+
+  data.forEach(n => {
+    container.innerHTML += `
+      <div class="notice">
+        <h3>${n.title}</h3>
+        <p>${n.content}</p>
+      </div>
+    `;
+  });
+}
+
+getNotices();
+</script>
+
+</body>
+</html>
