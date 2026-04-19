@@ -48,3 +48,14 @@ MONGO_URI=mongodb://127.0.0.1:27017/notesDB
 node server.js
 
 5.Open index.html
+
+
+
+
+## 📸 Screenshots
+
+### 🌐 Frontend UI
+![Frontend](./frontend.png)
+
+### 🔐 API Testing (Postman)
+![Postman](./postman.png)
