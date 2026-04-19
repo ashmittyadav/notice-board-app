@@ -49,8 +49,7 @@ node server.js
 
 5.Open index.html
 
-
-
+```
 
 ## 📸 Screenshots
 
