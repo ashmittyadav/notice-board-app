@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Multi Step Form</title>
+
+  <style id="premium-css">
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f4f6f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 350px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+h2 {
+  text-align: center;
+}
+
+.step {
+  display: none;
+}
+
+.active {
+  display: block;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+button {
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 6px;
+  background: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #45a049;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.steps {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.steps div {
+  width: 30%;
+  text-align: center;
+  padding: 5px;
+  border-bottom: 3px solid #ccc;
+}
+
+.steps .active-step {
+  border-color: #4CAF50;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<h2>Multi-Step Form</h2>
+
+<div class="container">
+    
+    <div id="step1">
+  <h3>Step 1: Personal Info</h3>
+  <input id="name" placeholder="Name"><br>
+  <input id="email" placeholder="Email"><br>
+  <button onclick="nextStep()">Next</button>
+</div>
+
+<div id="step2" style="display:none;">
+  <h3>Step 2: Address</h3>
+  <input id="city" placeholder="City"><br>
+  <input id="country" placeholder="Country"><br>
+  <button onclick="prevStep()">Back</button>
+  <button onclick="nextStep()">Next</button>
+</div>
+
+
+<div id="step3" style="display:none;">
+  <h3>Step 3: Review</h3>
+  <p id="review"></p>
+  <button onclick="prevStep()">Back</button>
+  <button onclick="submitForm()">Submit</button>
+</div>
+
+<script>
+
+    window.onload = function() {
+  const data = JSON.parse(localStorage.getItem("formData"));
+  if (data) {
+    name.value = data.name || "";
+    email.value = data.email || "";
+    city.value = data.city || "";
+    country.value = data.country || "";
+  }
+};
+
+function saveData() {
+  const data = {
+    name: name.value,
+    email: email.value,
+    city: city.value,
+    country: country.value
+  };
+  localStorage.setItem("formData", JSON.stringify(data));
+}
+
+
+let currentStep = 1;
+
+function showStep(step) {
+  document.getElementById("step1").style.display = "none";
+  document.getElementById("step2").style.display = "none";
+  document.getElementById("step3").style.display = "none";
+
+  document.getElementById("step" + step).style.display = "block";
+}
+
+function nextStep() {
+  const nameInput = document.getElementById("name");
+  const emailInput = document.getElementById("email");
+  const cityInput = document.getElementById("city");
+  const countryInput = document.getElementById("country");
+
+  if (currentStep === 1) {
+    if (!nameInput.value || !emailInput.value) {
+      alert("Fill all fields");
+      return;
+    }
+  }
+
+  if (currentStep === 2) {
+    if (!cityInput.value || !countryInput.value) {
+      alert("Fill all fields");
+      return;
+    }
+  }
+
+  currentStep++;
+
+  if (currentStep === 3) {
+    document.getElementById("review").innerText =
+      "Name: " + nameInput.value +
+      ", Email: " + emailInput.value +
+      ", City: " + cityInput.value +
+      ", Country: " + countryInput.value;
+  }
+
+  showStep(currentStep);
+}
+
+function prevStep() {
+  currentStep--;
+  showStep(currentStep);
+}
+
+function submitForm() {
+  alert("Form Submitted!");
+}
+</script>
+</div>
+
+
+</body>
+</html>
