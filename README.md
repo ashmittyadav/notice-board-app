@@ -58,6 +58,19 @@ node server.js
 
 ```
 
+
+---
+
+## 📄 Task 4: Multi-Step Form
+
+A separate multi-step form system has been implemented with:
+
+- Step navigation (Next / Back)
+- Input validation and error handling
+- Data persistence using localStorage (no data loss on refresh)
+
+---
+
 ## 📸 Screenshots
 
 ### 🌐 Frontend UI
@@ -65,3 +78,7 @@ node server.js
 
 ### 🔐 API Testing (Postman)
 ![Postman](./postman.png)
+
+### 🌐 Multi-Step Form UI
+![Form](./form-ui.png)
+
